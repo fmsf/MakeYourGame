@@ -14,11 +14,14 @@
     UInt8   *tags;
     UInt8   *original;
     UIImage *image;
+    UIImage *currentGeneratedImage;
 
     
     int     width;
     int     height;
     int     numberOfPixels;
+    
+    Boolean generated;
     
 }
 

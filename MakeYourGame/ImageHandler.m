@@ -13,9 +13,11 @@
 @implementation ImageHandler
 
 - (Boolean) setImage:(UIImage*)img{
-    /*if(original!=NULL){
-        [original release];
-    }*/
+    if(generated){
+        [currentGeneratedImage release];
+    }
+    
+    generated = NO;
     
     
 	image = img;
@@ -40,9 +42,10 @@
 }
 
 - (UIImage*) getImage{
-	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    if(!generated){
+        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
 	
-	CGContextRef context = CGBitmapContextCreate(
+        CGContextRef context = CGBitmapContextCreate(
 												 pixels,
 												 width,
 												 height,
@@ -54,14 +57,19 @@
 	
 	
 	
-	CGImageRef imgRef = CGBitmapContextCreateImage(context);
+        CGImageRef imgRef = CGBitmapContextCreateImage(context);
 	
-	//[img release];
-	CGColorSpaceRelease(colorSpace);
+        //[img release];
+        CGColorSpaceRelease(colorSpace);
 	
-	//free(pixels);
+        //free(pixels);
 	
-	return [UIImage imageWithCGImage: imgRef];
+        currentGeneratedImage = [UIImage imageWithCGImage: imgRef];
+        [currentGeneratedImage retain];
+        generated = YES;
+    }
+    
+    return currentGeneratedImage;
 	
 }
 

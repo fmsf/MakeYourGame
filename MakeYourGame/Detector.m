@@ -83,7 +83,10 @@
         for(int x=0;x<[imageHandler getImage].size.width;x++){
             if([imageHandler getRed:x :y]==0 && [imageHandler getTag:x :y]==0){
                 if([imageHandler getTag:x-1 :y]==0){ 
-                    [blobs addObject:[self trace:x :y external:YES]]; // TRACE MAIN BLOB
+                    NSMutableArray *newBlob = [self trace:x :y external:YES];
+                    if(newBlob!=NULL){
+                        [blobs addObject:newBlob]; // TRACE MAIN BLOB
+                    }
                     TagAssociation *association = [[TagAssociation alloc] initWithMainTag:currentTag];
                     [associations addObject:association];
                     currentTag++; 
@@ -135,9 +138,9 @@
         }
     }
     NSLog(@"blob count %d", [blobs count]);
-    for(int i=0;i<[blobs count];i++){
+/*    for(int i=0;i<[blobs count];i++){
         
-    }
+    }*/
     lastBlobList = blobs;
 }
 
@@ -168,8 +171,8 @@
             [currentUImage release];
         }
         currentUImage = inputImage;
-        imageCopy = [inputImage copy];
-        [imageCopy retain];
+        //imageCopy = [inputImage copy];
+        //[imageCopy retain];
         [currentUImage retain];
         [imageHandler setImage:currentUImage]; 
         [imageHandler threshold:threshold_level];

@@ -69,20 +69,22 @@
  didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer 
         fromConnection:(AVCaptureConnection *)connection {
     
-    if(transform){
         UIImage *image = [self imageFromSampleBuffer:sampleBuffer];
+    
         
         dispatch_async(dispatch_get_main_queue(), ^{ 
-            if(texture!=NULL){
-                [texture release];
+            if(transform){
+                if(texture!=NULL){
+                    [texture release];
+                }
+                currentImage = image;
+                [detector setImage:image];
+                texture = [[CCTexture2D alloc] initWithImage:[detector getImage]];
+            }else{
+                texture = [[CCTexture2D alloc] initWithImage:[detector getPaintedImage]];
             }
-            currentImage = image;
-            [detector setImage:image];
-            texture = [[CCTexture2D alloc] initWithImage:[detector getImage]];
+
         });
-    }else{
-        texture = [[CCTexture2D alloc] initWithImage:[detector getPaintedImage]];
-    }
     
 }
 
