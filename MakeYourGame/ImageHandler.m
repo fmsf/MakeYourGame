@@ -126,9 +126,11 @@
 
 - (void) setTag:(int)x :(int)y :(UInt8)tag{
 	tags[width*y+x]=tag;
-    original[[self getXY:x :y]+0] = 0;
-    original[[self getXY:x :y]+1] = 255;
-    original[[self getXY:x :y]+2] = 255;
+    if(tag!=0){
+        original[[self getXY:x :y]+0] = 0;
+        original[[self getXY:x :y]+1] = 255;
+        original[[self getXY:x :y]+2] = 255;
+    }
     
 }
 

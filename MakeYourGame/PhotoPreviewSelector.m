@@ -62,9 +62,7 @@
         sprite.position = ccp(240,160);
         [self addChild:sprite];
     }else{
-        if(!traced){
-            [sprite setTexture:[controller getTexture]];   
-        }
+        [sprite setTexture:[controller getTexture]];   
         
     }
 }
