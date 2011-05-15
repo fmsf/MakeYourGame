@@ -79,7 +79,9 @@
                 }
                 currentImage = image;
                 [detector setImage:image];
+                //[detector doTrace];
                 texture = [[CCTexture2D alloc] initWithImage:[detector getImage]];
+                //texture = [[CCTexture2D alloc] initWithImage:[detector getPaintedImage]];
             }else{
                 texture = [[CCTexture2D alloc] initWithImage:[detector getPaintedImage]];
             }

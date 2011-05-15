@@ -29,13 +29,26 @@
         nextInSequence = 3;
     }
     
+    int jumpover = 0;
+    
     
     while (!finish) {
         if(currentPoint.y==-1){
             currentPoint = firstPoint;
         }else if(firstNext.y==-1){
             firstNext = currentPoint;
+        }else{
+            if(currentPoint.x == firstNext.x && currentPoint.y == firstNext.y){ 
+                jumpover = 7;
+            }else if(currentPoint.x == firstPoint.x && currentPoint.y == firstPoint.y){ 
+                jumpover = 7;
+            }
+            
+            if(jumpover>1){
+                finish = YES;
+            }
         }
+        
         
         [imageHandler setTag:currentPoint.x :currentPoint.y :currentTag];
         [points addObject:[NSValue valueWithCGPoint:currentPoint]];
@@ -73,11 +86,20 @@
         
         
     }
+    
+    
             
     return points;
 }
 
+- (void) image:(UIImage*)image didFinishSavingWithError:(NSError *)error contextInfo:(NSDictionary*)info{
+    NSLog(@"save failed");
+}
+
 - (void) process{
+    UIImage* toSave = [imageHandler getImage];
+    UIImageWriteToSavedPhotosAlbum(toSave, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    NSLog(@"image saved");
     NSMutableArray* blobs = [[NSMutableArray alloc] init];
     for(int y=0;y<[imageHandler getImage].size.height;y++){
         for(int x=0;x<[imageHandler getImage].size.width;x++){
@@ -212,6 +234,8 @@
 
         imageHandler = [[ImageHandler alloc] init];
 
+        debug_flag = NO;
+        
         clockWiseSequence[0] = ccp(1,0);   // 0
         clockWiseSequence[1] = ccp(1,1);  // 1
         clockWiseSequence[2] = ccp(0,1);  // 2

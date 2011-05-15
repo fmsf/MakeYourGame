@@ -25,6 +25,8 @@
     NSMutableArray* lastBlobList;
     
     Boolean activeTrace;
+    
+    Boolean debug_flag;
 }
 
 - (UIImage*) getImage;

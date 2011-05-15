@@ -68,11 +68,16 @@
 }
 
 - (void) ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-/*    NSLog(@"Deactivating controller");
-    [controller deactivate];
-    NSLog(@"Doing trace");
-    [detector doTrace];
-    traced = YES;*/
+    if(traced){
+        [controller activate];
+        traced = NO;
+    }else{        
+        NSLog(@"Deactivating controller");
+        [controller deactivate];
+        NSLog(@"Doing trace");
+        [detector doTrace];
+        traced = YES;
+    }
     
 }
 
