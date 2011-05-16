@@ -27,7 +27,10 @@
 	CGDataProviderRef dataProvider = CGImageGetDataProvider(imgRef);
 	CFDataRef imageData = CGDataProviderCopyData(dataProvider);
 	pixels = (void*)CFDataGetBytePtr(imageData);
-    original = (void*)CFDataGetBytePtr(imageData);
+    
+    CGDataProviderRef odataProvider = CGImageGetDataProvider(imgRef);
+	CFDataRef oimageData = CGDataProviderCopyData(odataProvider);
+    original = (void*)CFDataGetBytePtr(oimageData);
 	
 	
 	width = CGImageGetWidth(imgRef);

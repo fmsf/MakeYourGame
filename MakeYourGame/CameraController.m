@@ -36,7 +36,7 @@
         output.videoSettings = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCVPixelFormatType_32BGRA]
                                                            forKey:(id)kCVPixelBufferPixelFormatTypeKey];
         
-        output.minFrameDuration = CMTimeMake(1, 20);
+        output.minFrameDuration = CMTimeMake(1, 15);
         
         [session startRunning];
         NSLog(@"session running");
