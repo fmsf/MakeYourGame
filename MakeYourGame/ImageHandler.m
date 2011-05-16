@@ -35,35 +35,35 @@
 	
 	numberOfPixels = width*height;
 	
-	tags = malloc(numberOfPixels);
+	tags = malloc(numberOfPixels*(sizeof(int)));
 	
-		
+    
 	return true;
 }
 
 - (UIImage*) getImage{
     if(!generated){
         CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-	
+        
         CGContextRef context = CGBitmapContextCreate(
-												 pixels,
-												 width,
-												 height,
-												 8,
-												 width*PIXEL_MULTIPLIER,
-												 colorSpace,
-												 kCGImageAlphaNoneSkipLast
-												 );
-	
-	
-	
+                                                     pixels,
+                                                     width,
+                                                     height,
+                                                     8,
+                                                     width*PIXEL_MULTIPLIER,
+                                                     colorSpace,
+                                                     kCGImageAlphaNoneSkipLast
+                                                     );
+        
+        
+        
         CGImageRef imgRef = CGBitmapContextCreateImage(context);
-	
+        
         //[img release];
         CGColorSpaceRelease(colorSpace);
-	
+        
         //free(pixels);
-	
+        
         currentGeneratedImage = [UIImage imageWithCGImage: imgRef];
         [currentGeneratedImage retain];
         generated = YES;
@@ -96,6 +96,15 @@
 	//free(pixels);
 	
 	return [UIImage imageWithCGImage: imgRef];
+}
+
+- (void) paintOriginalWithBlobs:(NSMutableArray*)blobs{
+    for(NSMutableArray* blob in blobs){
+        for(NSValue* val in blob){
+            CGPoint coords = [val CGPointValue];
+            [self setRGBOriginal:coords.x :coords.y :0 :255 :0];
+        }
+    }
 }
 
 - (void) threshold:(int)value{
@@ -132,13 +141,8 @@
 	original[[self getXY:x:y]+2]=b;
 }
 
-- (void) setTag:(int)x :(int)y :(UInt8)tag{
+- (void) setTag:(int)x :(int)y :(int)tag{
 	tags[width*y+x]=tag;
-    if(tag!=0){
-        original[[self getXY:x :y]+0] = 0;
-        original[[self getXY:x :y]+1] = 255;
-        original[[self getXY:x :y]+2] = 255;
-    }
     
 }
 
@@ -155,7 +159,7 @@
 	return pixels[[self getXY:x:y]+2];
 }
 
-- (UInt8) getTag:(int)x :(int)y{
+- (int) getTag:(int)x :(int)y{
 	return tags[width*y+x];
     
 }

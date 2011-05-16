@@ -36,7 +36,7 @@
         output.videoSettings = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCVPixelFormatType_32BGRA]
                                                            forKey:(id)kCVPixelBufferPixelFormatTypeKey];
         
-        output.minFrameDuration = CMTimeMake(1, 30);
+        output.minFrameDuration = CMTimeMake(1, 20);
         
         [session startRunning];
         NSLog(@"session running");
@@ -79,9 +79,9 @@
                 }
                 currentImage = image;
                 [detector setImage:image];
-                //[detector doTrace];
-                texture = [[CCTexture2D alloc] initWithImage:[detector getImage]];
-                //texture = [[CCTexture2D alloc] initWithImage:[detector getPaintedImage]];
+                [detector doTrace];
+                //texture = [[CCTexture2D alloc] initWithImage:[detector getImage]];
+                texture = [[CCTexture2D alloc] initWithImage:[detector getPaintedImage]];
             }else{
                 texture = [[CCTexture2D alloc] initWithImage:[detector getPaintedImage]];
             }

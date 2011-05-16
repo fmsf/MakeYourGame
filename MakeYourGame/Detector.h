@@ -19,14 +19,13 @@
     UIImage* imageCopy;
     
     CGPoint clockWiseSequence[8];
-    UInt8 currentTag;
+    int currentTag;
+    int savedTag;
     
     NSMutableArray* associations;
     NSMutableArray* lastBlobList;
     
     Boolean activeTrace;
-    
-    Boolean debug_flag;
 }
 
 - (UIImage*) getImage;

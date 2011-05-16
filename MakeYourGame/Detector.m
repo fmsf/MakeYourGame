@@ -29,7 +29,7 @@
         nextInSequence = 3;
     }
     
-    int jumpover = 0;
+    //    int jumpover = 0;
     
     
     while (!finish) {
@@ -37,16 +37,6 @@
             currentPoint = firstPoint;
         }else if(firstNext.y==-1){
             firstNext = currentPoint;
-        }else{
-            if(currentPoint.x == firstNext.x && currentPoint.y == firstNext.y){ 
-                jumpover = 7;
-            }else if(currentPoint.x == firstPoint.x && currentPoint.y == firstPoint.y){ 
-                jumpover = 7;
-            }
-            
-            if(jumpover>1){
-                finish = YES;
-            }
         }
         
         
@@ -75,6 +65,8 @@
                     
                 }
                 break;
+            }else if([imageHandler getTag:nextPointToSearch.x :nextPointToSearch.y]==0){
+                [imageHandler setTag:nextPointToSearch.x :nextPointToSearch.y :1];
             }
         }
         
@@ -87,104 +79,84 @@
         
     }
     
-    
-            
     return points;
 }
 
-- (void) image:(UIImage*)image didFinishSavingWithError:(NSError *)error contextInfo:(NSDictionary*)info{
-    NSLog(@"save failed");
-}
-
 - (void) process{
-    UIImage* toSave = [imageHandler getImage];
-    UIImageWriteToSavedPhotosAlbum(toSave, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
-    NSLog(@"image saved");
     NSMutableArray* blobs = [[NSMutableArray alloc] init];
     for(int y=0;y<[imageHandler getImage].size.height;y++){
         for(int x=0;x<[imageHandler getImage].size.width;x++){
-            if([imageHandler getRed:x :y]==0 && [imageHandler getTag:x :y]==0){
-                if([imageHandler getTag:x-1 :y]==0){ 
+            if([imageHandler getRed:x :y]==0){
+                Boolean externalTrace = false;
+                Boolean internalTrace = false;
+                if([imageHandler getRed:x :y-1]==255 && [imageHandler getTag:x :y]==0){
                     NSMutableArray *newBlob = [self trace:x :y external:YES];
                     if(newBlob!=NULL){
                         [blobs addObject:newBlob]; // TRACE MAIN BLOB
                     }
-                    TagAssociation *association = [[TagAssociation alloc] initWithMainTag:currentTag];
-                    [associations addObject:association];
-                    currentTag++; 
-                    NSLog(@"currentTag %d",currentTag);
-                }else{ // INSIDE A MAIN BLOB
-                    int tag = [imageHandler getTag:x-1 : y];
-                    Boolean notMainTag = true;
-                    
-                    
-                    for(TagAssociation *t in associations){ // CHECK IF TAG IS A MAIN TAG
-                        if([t getMainTag]==tag){
-                            notMainTag = false;
-                            break;
-                        }
+                    if(currentTag!=savedTag){
+                        currentTag = savedTag;
                     }
-                    
-                    if(notMainTag){
-                        for(TagAssociation *t in associations){ // IF NOT THEN GET ASSOTIATED MAIN TAG
-                            if([t checkIfAssociated:tag]){
-                                tag = [t getMainTag];
-                                break;
-                            }
-                        } 
-                    }
-                    
-                    for(;x<[imageHandler getImage].size.width;x++){ 
-                        if([imageHandler getTag:x :y]!=0){
-                            break;
+                    currentTag++;
+                    savedTag = currentTag;
+                    externalTrace = true;
+                }
+                if([imageHandler getRed:x :y+1]==255 && [imageHandler getTag:x :y+1]==0){
+                    if([imageHandler getTag:x :y]==0){
+                        int candidateTag = [imageHandler getTag:x-1 :y];
+                        if(candidateTag==0){
+                            NSLog(@"Something wrong happened here! There should be a tag at %d %d",x,y);
                         }else{
-                            if([imageHandler getRed:x+1 :y]==0){
-                                [imageHandler setTag:x :y :tag]; // FILL INTERNAL PART OF A BLOB
-                            }else if([imageHandler getTag:x+1 :y]==0){
-                                // fazer trace interno e associar tag interna
-                                [blobs addObject:[self trace:x :y external:NO]]; // TRACER INNER COUNTOURN
-                                for(TagAssociation* t in associations){
-                                    if([t getMainTag]==tag){
-                                        [t addTag:currentTag];
-                                    }
-                                }
-                                currentTag++;
-                                break;
-                            }
+                            currentTag = candidateTag;
+                            [imageHandler setTag:x :y :currentTag];
                         }
                     }
-                }                
-            }/*else{ // debug only
-                NSLog(@"%d %d",[imageHandler getRed:x :y], [imageHandler getTag:x :y]);
-            }*/
+                    NSMutableArray *newBlob = [self trace:x :y external:NO];
+                    if(newBlob!=NULL){
+                        [blobs addObject:newBlob]; // TRACE MAIN BLOB
+                    }
+                    internalTrace = true;
+                }
+                
+                if(!externalTrace && !internalTrace){
+                    if([imageHandler getTag:x :y]==0){
+                        int candidateTag = [imageHandler getTag:x-1 :y];
+                        [imageHandler setTag:x :y :candidateTag];
+                    }
+                }
+            }                       
         }
     }
     NSLog(@"blob count %d", [blobs count]);
-/*    for(int i=0;i<[blobs count];i++){
-        
-    }*/
+    /*    for(int i=0;i<[blobs count];i++){
+     
+     }*/
+    if(lastBlobList!=NULL){
+        [lastBlobList release];
+    }
     lastBlobList = blobs;
+    [imageHandler paintOriginalWithBlobs:blobs]; 
 }
 
 
 
 /*- (CCTexture2D*) paintImage{
-    ImageHandler* imgha = [[ImageHandler alloc] init];
-    [imgha setImage:imageCopy];
-    
-    for(NSMutableArray* blob in lastBlobList){
-        for(NSValue* val in blob){
-            CGPoint point = [val CGPointValue];
-            [imgha setRGB:point.x :point.y :0 :255 :255];
-        }
-    }
-    
-    //[imgha release];
-    CCTexture2D* texture = [[CCTexture2D alloc] initWithImage:[imgha getImage]];
-    [imgha release];
-    return texture;
-                            
-}*/
+ ImageHandler* imgha = [[ImageHandler alloc] init];
+ [imgha setImage:imageCopy];
+ 
+ for(NSMutableArray* blob in lastBlobList){
+ for(NSValue* val in blob){
+ CGPoint point = [val CGPointValue];
+ [imgha setRGB:point.x :point.y :0 :255 :255];
+ }
+ }
+ 
+ //[imgha release];
+ CCTexture2D* texture = [[CCTexture2D alloc] initWithImage:[imgha getImage]];
+ [imgha release];
+ return texture;
+ 
+ }*/
 
 
 - (void) setImage:(UIImage*) inputImage{
@@ -207,7 +179,7 @@
             associations = [[NSMutableArray alloc]init];
         }
     }
-
+    
 }
 
 - (UIImage*) getImage{
@@ -231,10 +203,13 @@
 -(id) init{
 	if( (self=[super init])) {
         threshold_level = 100;
-
+        
         imageHandler = [[ImageHandler alloc] init];
-
-        debug_flag = NO;
+        
+/*        currentUImage = [UIImage imageNamed:@"Noise6.png"];
+        imageHandler = [[ImageHandler alloc] init];
+        [imageHandler setImage:currentUImage];
+        [imageHandler threshold:threshold_level];*/
         
         clockWiseSequence[0] = ccp(1,0);   // 0
         clockWiseSequence[1] = ccp(1,1);  // 1
@@ -246,7 +221,7 @@
         clockWiseSequence[7] = ccp(1,-1);   // 7
         
         
-        currentTag = 1;
+        savedTag = currentTag = 2;
         
         
         
