@@ -135,6 +135,7 @@
         [lastBlobList release];
     }
     lastBlobList = blobs;
+    [lastBlobList retain];
     [imageHandler paintOriginalWithBlobs:blobs]; 
 }
 
@@ -193,6 +194,10 @@
 
 - (UIImage*) getPaintedImage{
     return [imageHandler getOriginal];
+}
+
+- (NSMutableArray*) getBlobs{
+    return lastBlobList;
 }
 
 - (void) doTrace{

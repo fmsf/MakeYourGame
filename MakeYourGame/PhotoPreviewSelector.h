@@ -10,6 +10,7 @@
 #import "cocos2d.h"
 #import "CameraController.h"
 #import "Detector.h"
+#import "EarClipper.h"
 
 @interface PhotoPreviewSelector : CCLayer {
     CameraController *controller;
@@ -18,6 +19,7 @@
     
     Boolean spriteToAdd;
     Boolean traced;
+    NSMutableArray* polygons;
 }
 
 +(CCScene *) scene;

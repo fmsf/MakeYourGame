@@ -256,4 +256,35 @@ enum {
 	// don't forget to call "super dealloc"
 	[super dealloc];
 }
+
+
+
+- (void) BuildPolygon:(NSMutableArray*) PolygonList{
+    b2BodyDef polyBodyDef;
+    polyBodyDef.type = b2_dynamicBody;        
+    polyBodyDef.position.Set(200/PTM_RATIO, 400/PTM_RATIO);
+    
+    b2Body *polyBody = world->CreateBody(&polyBodyDef);
+    
+    for(NSMutableArray* polygon in PolygonList){
+        CGPoint A = [(NSValue*)[polygon objectAtIndex:0] CGPointValue];
+        CGPoint B = [(NSValue*)[polygon objectAtIndex:1] CGPointValue];
+        CGPoint C = [(NSValue*)[polygon objectAtIndex:2] CGPointValue];
+        
+        b2PolygonShape polygonShape;
+        b2Vec2 vertices[3];
+        vertices[0].Set(A.x,A.y);
+        vertices[1].Set(B.x,B.y);
+        vertices[2].Set(C.x,C.y);        
+        polygonShape.Set(vertices,3);
+        
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape = &polygonShape;	
+        fixtureDef.density = 1.0f;
+        fixtureDef.friction = 0.3f;
+        polyBody->CreateFixture(&fixtureDef);                        
+    }
+}
+
+
 @end

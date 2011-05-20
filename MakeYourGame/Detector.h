@@ -32,6 +32,8 @@
 - (void) setImage:(UIImage*) inputImage;
 - (void) doTrace;
 - (UIImage*) getPaintedImage;
+- (NSMutableArray*) getBlobs;
+
 
 
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B6279C9E1382931F007D5FA3 /* EarClipper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6279C9D1382931F007D5FA3 /* EarClipper.m */; };
 		B6918CE11378266500D18600 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6918CE01378266500D18600 /* CoreMedia.framework */; };
 		B6918CE41378266B00D18600 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6918CE31378266B00D18600 /* CoreVideo.framework */; };
 		B6C7F4861373FCDC00E92C82 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6C7F4851373FCDC00E92C82 /* QuartzCore.framework */; };
@@ -169,6 +170,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B6279C9C1382931F007D5FA3 /* EarClipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EarClipper.h; sourceTree = "<group>"; };
+		B6279C9D1382931F007D5FA3 /* EarClipper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EarClipper.m; sourceTree = "<group>"; };
 		B6918CE01378266500D18600 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		B6918CE31378266B00D18600 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		B6C7F4811373FCDC00E92C82 /* MakeYourGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MakeYourGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -515,9 +518,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B62799CE13813D65007D5FA3 /* Resources-iPad */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Resources-iPad";
+			sourceTree = "<group>";
+		};
+		B6279C9B138291F4007D5FA3 /* Triangulators */ = {
+			isa = PBXGroup;
+			children = (
+				B6279C9C1382931F007D5FA3 /* EarClipper.h */,
+				B6279C9D1382931F007D5FA3 /* EarClipper.m */,
+			);
+			name = Triangulators;
+			sourceTree = "<group>";
+		};
 		B6C7F4761373FCDB00E92C82 = {
 			isa = PBXGroup;
 			children = (
+				B62799CE13813D65007D5FA3 /* Resources-iPad */,
 				B6918CE31378266B00D18600 /* CoreVideo.framework */,
 				B6918CE01378266500D18600 /* CoreMedia.framework */,
 				B6C7F4951373FCDC00E92C82 /* MakeYourGame */,
@@ -552,6 +572,7 @@
 		B6C7F4951373FCDC00E92C82 /* MakeYourGame */ = {
 			isa = PBXGroup;
 			children = (
+				B6279C9B138291F4007D5FA3 /* Triangulators */,
 				B6C7F665137406CD00E92C82 /* Detectors */,
 				B6C7F6611373FF5A00E92C82 /* Interfaces */,
 				B6C7F64D1373FCE100E92C82 /* AppDelegate.h */,
@@ -1157,6 +1178,7 @@
 				B6C7F66F137406FE00E92C82 /* ImageHandler.m in Sources */,
 				B6C7F670137406FE00E92C82 /* CameraController.m in Sources */,
 				B6C7F671137406FE00E92C82 /* TagAssociation.m in Sources */,
+				B6279C9E1382931F007D5FA3 /* EarClipper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1209,8 +1231,10 @@
 				GCC_PREFIX_HEADER = MakeYourGame/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = MakeYourGame/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = MakeYourGame/libs;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1225,8 +1249,10 @@
 				GCC_PREFIX_HEADER = MakeYourGame/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = MakeYourGame/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = MakeYourGame/libs;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;

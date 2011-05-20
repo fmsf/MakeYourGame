@@ -44,6 +44,7 @@
         
         spriteToAdd = true;
 		
+        polygons = NULL;
         [self schedule:@selector(tick:) interval:0.05];
 
 	}
@@ -59,7 +60,7 @@
     if(spriteToAdd){
         spriteToAdd = false;
         sprite = [CCSprite spriteWithTexture:[controller getTexture]];
-        sprite.position = ccp(240,160);
+        sprite.position = ccp(540,460);
         sprite.scale = 2.0f;
         [self addChild:sprite];
     }else{
@@ -73,13 +74,49 @@
         [controller activate];
         traced = NO;
     }else{        
+        if(polygons!=NULL){
+            [polygons release];
+        }
         NSLog(@"Deactivating controller");
         [controller deactivate];
         NSLog(@"Doing trace");
-        [detector doTrace];
+        //[detector doTrace];
+        EarClipper* clipper = [[EarClipper alloc] init];
+        if(polygons!=NULL){
+            [polygons release];
+        }
+        polygons = [[NSMutableArray alloc] init];
+        for(NSMutableArray* points in [detector getBlobs]){
+            [polygons addObject:[clipper TransformToPolygons:points]];
+        }
         traced = YES;
     }
     
+}
+
+- (void) draw{
+    if(polygons!=NULL){
+        glColor4f(0.8, 1.0, 0.76, 0.3);  
+		glLineWidth(1.0f);
+        
+        for(NSMutableArray* polyList in polygons){
+            for(NSMutableArray* polygon in polyList){
+                CGPoint A = [((NSValue*)[polygon objectAtIndex:0]) CGPointValue];
+                CGPoint B = [((NSValue*)[polygon objectAtIndex:1]) CGPointValue];
+                CGPoint C = [((NSValue*)[polygon objectAtIndex:2]) CGPointValue];
+                NSLog(@"----------");
+                NSLog(@"%f %f",A.x,A.y);
+                NSLog(@"%f %f",B.x,B.y);
+                NSLog(@"%f %f",C.x,C.y);
+                NSLog(@"----------");
+                
+                ccDrawLine(A,B);
+                ccDrawLine(A,C);
+                ccDrawLine(B,C);
+            }
+            
+        }
+    }
 }
 
 // on "dealloc" you need to release all your retained objects
