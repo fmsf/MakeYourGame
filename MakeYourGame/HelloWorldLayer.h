@@ -26,5 +26,7 @@
 
 // adds a new sprite at a given coordinate
 -(void) addNewSpriteWithCoords:(CGPoint)p;
+- (void) BuildPolygon:(NSMutableArray*) PolygonList;
+
 
 @end

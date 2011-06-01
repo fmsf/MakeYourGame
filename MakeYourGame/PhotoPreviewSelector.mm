@@ -7,6 +7,7 @@
 //
 
 #import "PhotoPreviewSelector.h"
+#import "HelloWorldLayer.h"
 
 
 @implementation PhotoPreviewSelector
@@ -71,8 +72,9 @@
 
 - (void) ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
     if(traced){
-        [controller activate];
-        traced = NO;
+//        [controller activate];
+//        traced = NO;
+        [[CCDirector sharedDirector] replaceScene:[HelloWorldLayer scene:polygons]];
     }else{        
         if(polygons!=NULL){
             [polygons release];
@@ -87,9 +89,14 @@
         }
         polygons = [[NSMutableArray alloc] init];
         for(NSMutableArray* points in [detector getBlobs]){
-            [polygons addObject:[clipper TransformToPolygons:points]];
+            NSMutableArray* candidate = [clipper TransformToPolygons:points];
+            if(candidate!=nil){
+                [polygons addObject:candidate];
+            }
         }
         traced = YES;
+        
+        
     }
     
 }
@@ -104,11 +111,11 @@
                 CGPoint A = [((NSValue*)[polygon objectAtIndex:0]) CGPointValue];
                 CGPoint B = [((NSValue*)[polygon objectAtIndex:1]) CGPointValue];
                 CGPoint C = [((NSValue*)[polygon objectAtIndex:2]) CGPointValue];
-                NSLog(@"----------");
+/*                NSLog(@"----------");
                 NSLog(@"%f %f",A.x,A.y);
                 NSLog(@"%f %f",B.x,B.y);
                 NSLog(@"%f %f",C.x,C.y);
-                NSLog(@"----------");
+                NSLog(@"----------");*/
                 
                 ccDrawLine(A,B);
                 ccDrawLine(A,C);

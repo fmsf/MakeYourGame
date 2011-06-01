@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B6279C9E1382931F007D5FA3 /* EarClipper.m in Sources */ = {isa = PBXBuildFile; fileRef = B6279C9D1382931F007D5FA3 /* EarClipper.m */; };
+		B6279C9E1382931F007D5FA3 /* EarClipper.mm in Sources */ = {isa = PBXBuildFile; fileRef = B6279C9D1382931F007D5FA3 /* EarClipper.mm */; };
 		B6918CE11378266500D18600 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6918CE01378266500D18600 /* CoreMedia.framework */; };
 		B6918CE41378266B00D18600 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6918CE31378266B00D18600 /* CoreVideo.framework */; };
 		B6C7F4861373FCDC00E92C82 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6C7F4851373FCDC00E92C82 /* QuartzCore.framework */; };
@@ -162,16 +162,18 @@
 		B6C7F6551373FCE100E92C82 /* HelloWorldLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = B6C7F6541373FCE100E92C82 /* HelloWorldLayer.mm */; };
 		B6C7F6581373FCE100E92C82 /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = B6C7F6571373FCE100E92C82 /* GLES-Render.mm */; };
 		B6C7F65B1373FCE100E92C82 /* blocks.png in Resources */ = {isa = PBXBuildFile; fileRef = B6C7F65A1373FCE100E92C82 /* blocks.png */; };
-		B6C7F6641373FF8900E92C82 /* PhotoPreviewSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C7F6631373FF8900E92C82 /* PhotoPreviewSelector.m */; };
+		B6C7F6641373FF8900E92C82 /* PhotoPreviewSelector.mm in Sources */ = {isa = PBXBuildFile; fileRef = B6C7F6631373FF8900E92C82 /* PhotoPreviewSelector.mm */; };
 		B6C7F66E137406FE00E92C82 /* Detector.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C7F666137406FE00E92C82 /* Detector.m */; };
 		B6C7F66F137406FE00E92C82 /* ImageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C7F667137406FE00E92C82 /* ImageHandler.m */; };
 		B6C7F670137406FE00E92C82 /* CameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C7F669137406FE00E92C82 /* CameraController.m */; };
 		B6C7F671137406FE00E92C82 /* TagAssociation.m in Sources */ = {isa = PBXBuildFile; fileRef = B6C7F66C137406FE00E92C82 /* TagAssociation.m */; };
+		B6D383C4138BCE6D00494AFF /* Game.mm in Sources */ = {isa = PBXBuildFile; fileRef = B6D383C3138BCE6D00494AFF /* Game.mm */; };
+		B6D383C7138BD68800494AFF /* GamePolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = B6D383C6138BD68800494AFF /* GamePolygon.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B6279C9C1382931F007D5FA3 /* EarClipper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EarClipper.h; sourceTree = "<group>"; };
-		B6279C9D1382931F007D5FA3 /* EarClipper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EarClipper.m; sourceTree = "<group>"; };
+		B6279C9D1382931F007D5FA3 /* EarClipper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EarClipper.mm; sourceTree = "<group>"; };
 		B6918CE01378266500D18600 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		B6918CE31378266B00D18600 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		B6C7F4811373FCDC00E92C82 /* MakeYourGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MakeYourGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -486,7 +488,7 @@
 		B6C7F6591373FCE100E92C82 /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
 		B6C7F65A1373FCE100E92C82 /* blocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blocks.png; path = Resources/blocks.png; sourceTree = "<group>"; };
 		B6C7F6621373FF8900E92C82 /* PhotoPreviewSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoPreviewSelector.h; sourceTree = "<group>"; };
-		B6C7F6631373FF8900E92C82 /* PhotoPreviewSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoPreviewSelector.m; sourceTree = "<group>"; };
+		B6C7F6631373FF8900E92C82 /* PhotoPreviewSelector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PhotoPreviewSelector.mm; sourceTree = "<group>"; };
 		B6C7F666137406FE00E92C82 /* Detector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Detector.m; sourceTree = "<group>"; };
 		B6C7F667137406FE00E92C82 /* ImageHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageHandler.m; sourceTree = "<group>"; };
 		B6C7F668137406FE00E92C82 /* Detector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Detector.h; sourceTree = "<group>"; };
@@ -495,6 +497,10 @@
 		B6C7F66B137406FE00E92C82 /* TagAssociation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagAssociation.h; sourceTree = "<group>"; };
 		B6C7F66C137406FE00E92C82 /* TagAssociation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagAssociation.m; sourceTree = "<group>"; };
 		B6C7F66D137406FE00E92C82 /* ImageHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageHandler.h; sourceTree = "<group>"; };
+		B6D383C2138BCE6D00494AFF /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
+		B6D383C3138BCE6D00494AFF /* Game.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Game.mm; sourceTree = "<group>"; };
+		B6D383C5138BD68800494AFF /* GamePolygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GamePolygon.h; sourceTree = "<group>"; };
+		B6D383C6138BD68800494AFF /* GamePolygon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GamePolygon.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -529,7 +535,7 @@
 			isa = PBXGroup;
 			children = (
 				B6279C9C1382931F007D5FA3 /* EarClipper.h */,
-				B6279C9D1382931F007D5FA3 /* EarClipper.m */,
+				B6279C9D1382931F007D5FA3 /* EarClipper.mm */,
 			);
 			name = Triangulators;
 			sourceTree = "<group>";
@@ -572,6 +578,7 @@
 		B6C7F4951373FCDC00E92C82 /* MakeYourGame */ = {
 			isa = PBXGroup;
 			children = (
+				B6D383C0138BCE5700494AFF /* GameControllers */,
 				B6279C9B138291F4007D5FA3 /* Triangulators */,
 				B6C7F665137406CD00E92C82 /* Detectors */,
 				B6C7F6611373FF5A00E92C82 /* Interfaces */,
@@ -949,7 +956,7 @@
 			isa = PBXGroup;
 			children = (
 				B6C7F6621373FF8900E92C82 /* PhotoPreviewSelector.h */,
-				B6C7F6631373FF8900E92C82 /* PhotoPreviewSelector.m */,
+				B6C7F6631373FF8900E92C82 /* PhotoPreviewSelector.mm */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -967,6 +974,17 @@
 				B6C7F667137406FE00E92C82 /* ImageHandler.m */,
 			);
 			name = Detectors;
+			sourceTree = "<group>";
+		};
+		B6D383C0138BCE5700494AFF /* GameControllers */ = {
+			isa = PBXGroup;
+			children = (
+				B6D383C2138BCE6D00494AFF /* Game.h */,
+				B6D383C3138BCE6D00494AFF /* Game.mm */,
+				B6D383C5138BD68800494AFF /* GamePolygon.h */,
+				B6D383C6138BD68800494AFF /* GamePolygon.m */,
+			);
+			name = GameControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1173,12 +1191,14 @@
 				B6C7F6521373FCE100E92C82 /* RootViewController.m in Sources */,
 				B6C7F6551373FCE100E92C82 /* HelloWorldLayer.mm in Sources */,
 				B6C7F6581373FCE100E92C82 /* GLES-Render.mm in Sources */,
-				B6C7F6641373FF8900E92C82 /* PhotoPreviewSelector.m in Sources */,
+				B6C7F6641373FF8900E92C82 /* PhotoPreviewSelector.mm in Sources */,
 				B6C7F66E137406FE00E92C82 /* Detector.m in Sources */,
 				B6C7F66F137406FE00E92C82 /* ImageHandler.m in Sources */,
 				B6C7F670137406FE00E92C82 /* CameraController.m in Sources */,
 				B6C7F671137406FE00E92C82 /* TagAssociation.m in Sources */,
-				B6279C9E1382931F007D5FA3 /* EarClipper.m in Sources */,
+				B6279C9E1382931F007D5FA3 /* EarClipper.mm in Sources */,
+				B6D383C4138BCE6D00494AFF /* Game.mm in Sources */,
+				B6D383C7138BD68800494AFF /* GamePolygon.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

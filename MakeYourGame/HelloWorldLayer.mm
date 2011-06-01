@@ -10,6 +10,8 @@
 // Import the interfaces
 #import "HelloWorldLayer.h"
 
+#import "EarClipper.h"
+
 //Pixel to metres ratio. Box2D uses metres as the unit for measurement.
 //This ratio defines how many pixels correspond to 1 Box2D "metre"
 //Box2D is optimized for objects of 1x1 metre therefore it makes sense
@@ -41,6 +43,21 @@ enum {
 	// return the scene
 	return scene;
 }
+
++(CCScene *) scene:(NSMutableArray*)polygonList{
+    // 'scene' is an autorelease object.
+	CCScene *scene = [CCScene node];
+	
+	// 'layer' is an autorelease object.
+	HelloWorldLayer *layer = [HelloWorldLayer node];
+	
+	// add layer as a child to scene
+	[scene addChild: layer];
+    [layer BuildPolygon:polygonList];
+	// return the scene
+	return scene;
+}
+
 
 // on "init" you need to initialize your instance
 -(id) init
@@ -115,7 +132,7 @@ enum {
 		
 		//Set up sprite
 		
-		CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"blocks.png" capacity:150];
+/*		CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"blocks.png" capacity:150];
 		[self addChild:batch z:0 tag:kTagBatchNode];
 		
 		[self addNewSpriteWithCoords:ccp(screenSize.width/2, screenSize.height/2)];
@@ -123,7 +140,7 @@ enum {
 		CCLabelTTF *label = [CCLabelTTF labelWithString:@"Tap screen" fontName:@"Marker Felt" fontSize:32];
 		[self addChild:label z:0];
 		[label setColor:ccc3(0,0,255)];
-		label.position = ccp( screenSize.width/2, screenSize.height-50);
+		label.position = ccp( screenSize.width/2, screenSize.height-50);*/
 		
 		[self schedule: @selector(tick:)];
 	}
@@ -151,16 +168,16 @@ enum {
 -(void) addNewSpriteWithCoords:(CGPoint)p
 {
 	CCLOG(@"Add sprite %0.2f x %02.f",p.x,p.y);
-	CCSpriteBatchNode *batch = (CCSpriteBatchNode*) [self getChildByTag:kTagBatchNode];
+	//CCSpriteBatchNode *batch = (CCSpriteBatchNode*) [self getChildByTag:kTagBatchNode];
 	
 	//We have a 64x64 sprite sheet with 4 different 32x32 images.  The following code is
 	//just randomly picking one of the images
 	int idx = (CCRANDOM_0_1() > .5 ? 0:1);
 	int idy = (CCRANDOM_0_1() > .5 ? 0:1);
-	CCSprite *sprite = [CCSprite spriteWithBatchNode:batch rect:CGRectMake(32 * idx,32 * idy,32,32)];
-	[batch addChild:sprite];
+	//CCSprite *sprite = [CCSprite spriteWithBatchNode:batch rect:CGRectMake(32 * idx,32 * idy,32,32)];
+	//[batch addChild:sprite];
 	
-	sprite.position = ccp( p.x, p.y);
+	//sprite.position = ccp( p.x, p.y);
 	
 	// Define the dynamic body.
 	//Set up a 1m squared box in the physics world
@@ -168,7 +185,7 @@ enum {
 	bodyDef.type = b2_dynamicBody;
 
 	bodyDef.position.Set(p.x/PTM_RATIO, p.y/PTM_RATIO);
-	bodyDef.userData = sprite;
+//	bodyDef.userData = sprite;
 	b2Body *body = world->CreateBody(&bodyDef);
 	
 	// Define another box shape for our dynamic body.
@@ -258,31 +275,69 @@ enum {
 }
 
 
-
 - (void) BuildPolygon:(NSMutableArray*) PolygonList{
-    b2BodyDef polyBodyDef;
-    polyBodyDef.type = b2_dynamicBody;        
-    polyBodyDef.position.Set(200/PTM_RATIO, 400/PTM_RATIO);
-    
-    b2Body *polyBody = world->CreateBody(&polyBodyDef);
-    
-    for(NSMutableArray* polygon in PolygonList){
-        CGPoint A = [(NSValue*)[polygon objectAtIndex:0] CGPointValue];
-        CGPoint B = [(NSValue*)[polygon objectAtIndex:1] CGPointValue];
-        CGPoint C = [(NSValue*)[polygon objectAtIndex:2] CGPointValue];
+    for(NSMutableArray* poly in PolygonList){
+        if([poly count]<3){
+            continue;
+        }
+        b2BodyDef polyBodyDef;
+        polyBodyDef.type = b2_dynamicBody;        
+        polyBodyDef.position.Set(200/PTM_RATIO, 400/PTM_RATIO);
         
-        b2PolygonShape polygonShape;
-        b2Vec2 vertices[3];
-        vertices[0].Set(A.x,A.y);
-        vertices[1].Set(B.x,B.y);
-        vertices[2].Set(C.x,C.y);        
-        polygonShape.Set(vertices,3);
-        
-        b2FixtureDef fixtureDef;
-        fixtureDef.shape = &polygonShape;	
-        fixtureDef.density = 1.0f;
-        fixtureDef.friction = 0.3f;
-        polyBody->CreateFixture(&fixtureDef);                        
+        b2Body *polyBody = world->CreateBody(&polyBodyDef);
+        int p = 0;
+//        NSLog(@"%d<--- poly size", [[PolygonList objectAtIndex:0]count]);
+        for(NSMutableArray* polygon in poly){
+            CGPoint A = [(NSValue*)[polygon objectAtIndex:0] CGPointValue];
+            CGPoint B = [(NSValue*)[polygon objectAtIndex:1] CGPointValue];
+            CGPoint C = [(NSValue*)[polygon objectAtIndex:2] CGPointValue];
+            
+            b2PolygonShape polygonShape;
+            b2Vec2 vertices[3];
+            vertices[0].Set(A.x/PTM_RATIO,A.y/PTM_RATIO);
+            vertices[1].Set(B.x/PTM_RATIO,B.y/PTM_RATIO);
+            vertices[2].Set(C.x/PTM_RATIO,C.y/PTM_RATIO);  
+            
+            Boolean stop = true;
+            // Ensure the polygon is convex and the interior
+            // is to the left of each edge.
+            for (int32 i = 0; i < 3; ++i)
+            {
+                int32 i1 = i;
+                int32 i2 = i + 1 < 3 ? i + 1 : 0;
+                b2Vec2 edge = vertices[i2] - vertices[i1];
+                
+                for (int32 j = 0; j < 3; ++j)
+                {
+                    // Don't check vertices on the current edge.
+                    if (j == i1 || j == i2)
+                    {
+                        continue;
+                    }
+                    
+                    b2Vec2 r = vertices[j] - vertices[i1];
+                    
+                    // Your polygon is non-convex (it has an indentation) or
+                    // has colinear edges.
+                    float32 s = b2Cross(edge, r);
+                    if(s > 0.0f){
+                        stop = false;
+                    }
+                }
+            }
+
+            if(stop){
+                continue;
+            }
+            
+            polygonShape.Set(vertices,3);
+            
+            b2FixtureDef fixtureDef;
+            fixtureDef.shape = &polygonShape;	
+            fixtureDef.density = 1.0f;
+            fixtureDef.friction = 0.3f;
+            polyBody->CreateFixture(&fixtureDef);                        
+        }
     }
 }
 

@@ -10,14 +10,15 @@
 #import "cocos2d.h"
 
 
+#define MINIMUM_POINTS_IN_POLYGON 30
 
 @interface EarClipper : NSObject {
     
 }
 
-- (float) CrossArea:(CGPoint) A:(CGPoint) B: (CGPoint) C;
++ (float) CrossArea:(CGPoint) A:(CGPoint) B: (CGPoint) C;
 - (NSMutableArray*) TransformToPolygons:(NSMutableArray*) points;
-- (int) findEar:(NSMutableArray*) points;
+- (int) findEar:(NSMutableArray*) points:(int)start;
 - (Boolean) PointInTriangle:(CGPoint) A:(CGPoint) B: (CGPoint) C: (CGPoint) P;
 
 

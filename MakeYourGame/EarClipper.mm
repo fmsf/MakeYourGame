@@ -10,27 +10,34 @@
 
 @implementation EarClipper
 
-- (float) CrossArea:(CGPoint) A:(CGPoint) B: (CGPoint) C{
-    return abs(A.x*B.y+B.x*C.y+C.x*A.y-A.x*C.y-C.x*B.y-B.x*A.y)/2;
++ (float) CrossArea:(CGPoint) A:(CGPoint) B: (CGPoint) C{
+    //return abs(A.x*B.y+B.x*C.y+C.x*A.y-A.x*C.y-C.x*B.y-B.x*A.y)/2;
+    CGPoint a = A;
+    CGPoint b = B;
+    CGPoint c = C;
+    float ab = sqrt((a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
+    float ac = sqrt((a.x-c.x)*(a.x-c.x)+(a.y-c.y)*(a.y-c.y));
+    float bc = sqrt((b.x-c.x)*(b.x-c.x)+(b.y-c.y)*(b.y-c.y));
 }
 
 - (Boolean) PointInTriangle:(CGPoint) A:(CGPoint) B: (CGPoint) C: (CGPoint) P{
-    float ABC = [self CrossArea:A :B :C];
+    float ABC = [EarClipper CrossArea:A :B :C];
     
-    float ABP = [self CrossArea:A :B :P];
-    float ACP = [self CrossArea:A :C :P];
-    float BCP = [self CrossArea:B :C :P];
+    float ABP = [EarClipper CrossArea:A :B :P];
+    float ACP = [EarClipper CrossArea:A :C :P];
+    float BCP = [EarClipper CrossArea:B :C :P];
     float acceptedFloatingPointErrorMargin = 0.000001;
     if(abs(ABC-(ABP+ACP+BCP))<acceptedFloatingPointErrorMargin){
         return NO;
     }else{
+//        NSLog(@"-> area ->  %f",ABC);
         return YES;
     }
 }
 
-- (int) findEar:(NSMutableArray*) points{
+- (int) findEar:(NSMutableArray*) points:(int)start{
     int v0=0, v1=1, v2=2;
-    for(int i=0;i<[points count];i++){
+    for(int i=start;i<[points count];i++){
         if(i==0){
             v0=[points count]-1;
         }else{
@@ -48,9 +55,18 @@
         CGPoint B = [(NSValue*)[points objectAtIndex:v1] CGPointValue];
         CGPoint C = [(NSValue*)[points objectAtIndex:v2] CGPointValue];
         Boolean passed = YES;
-        for(int e=i+1;e<[points count];e++){
+        int e;
+        for(e=0;e<[points count];e++){
+            if(e==i){
+                continue;
+            }
             CGPoint P = [(NSValue*)[points objectAtIndex:e] CGPointValue];
             if([self PointInTriangle:A :B :C :P]==YES){
+                NSLog(@"i=%d e=%d",i,e);
+                NSLog(@"a.x=%f a.y=%f",A.x,A.y);
+                NSLog(@"b.x=%f b.y=%f",B.x,B.y);
+                NSLog(@"c.x=%f c.y=%f",C.x,C.y);
+                NSLog(@"p.x=%f p.y=%f",P.x,P.y);
                 passed = NO;
                 break;
             }
@@ -64,11 +80,11 @@
 }
 
 - (NSMutableArray*) RemoveCoLinearPoints:(NSMutableArray*) points{
-    CGPoint current_point;
+    /*CGPoint current_point;
     CGPoint first_point;
     float m=0;
     float errorMargin = 0;
-    Boolean f=false,c=false;
+    Boolean f=false,c=false;*/
     int i=0;
     NSMutableArray* pointsToRemove = [[NSMutableArray alloc] init];
   /*  for(NSValue* point in points){
@@ -96,9 +112,9 @@
             }
         }
     }*/
-    for(int i=0;i<[points count];i+=2){
+    for(i=0;i<[points count];i++){
         int j;
-        for(j=0;j<3 && i+j<[points count];j++){
+        for(j=0;j<5 && i+j<[points count];j++){
             [pointsToRemove addObject:[points objectAtIndex:i+j]];            
         }
         i+=j;
@@ -114,6 +130,10 @@
 }
 
 - (NSMutableArray*) TransformToPolygons:(NSMutableArray*) points{
+    // Only compute polygone if polygon has enought points
+    if([points count]<MINIMUM_POINTS_IN_POLYGON){
+        return NULL;
+    }
     int startPoint = -1;
 
     NSMutableArray* polygons = [[NSMutableArray alloc] init];
@@ -122,31 +142,48 @@
     
     points = [self RemoveCoLinearPoints:points];
     
+    
+    float EPSILON = 1;
+    NSLog(@"%d",[points count]);
+    int A =0;
+    int B =0;
+    int C =0;
     while([points count]>3){
         if(startPoint==-1){
-            startPoint = [self findEar:points];
+            startPoint = [self findEar:points:0];
             if(startPoint==-1){
                 break;
             }
         }
         
-        
-        
-        
-        int A = (startPoint-1>=0 ? startPoint-1 : [points count]-1);
-        int B = startPoint;
-        int C = (startPoint+1<[points count] ? startPoint+1 : 0);
-        
+        if(startPoint>=0){
+            A = (startPoint-1>=0 ? startPoint-1 : [points count]-1);
+            B = startPoint;
+            C = (startPoint+1<[points count] ? startPoint+1 : 0);
+        }else{
+            NSLog(@"aaaaaaaaaa");
+        }
+        NSLog(@"A=%d, B=%d, c=%d",A,B,C);
         polygon = [[NSMutableArray alloc] init];
+        CGPoint pa = [(NSValue*)[points objectAtIndex:A] CGPointValue];
+        CGPoint pb = [(NSValue*)[points objectAtIndex:B] CGPointValue];
+        CGPoint pc = [(NSValue*)[points objectAtIndex:C] CGPointValue];
         [polygon addObject:[points objectAtIndex:A]];
         [polygon addObject:[points objectAtIndex:B]];
         [polygon addObject:[points objectAtIndex:C]];
-//        NSLog(@"%d %d %d",A,B,C);
+        NSLog(@"a.x = %f a.y=%f",pa.x,pa.y);
+        NSLog(@"b.x = %f b.y=%f",pb.x,pb.y);
+        NSLog(@"c.x = %f c.y=%f",pc.x,pc.y);
+        
+        
         [points removeObjectAtIndex:B];
-        
+        NSLog(@"removed %d",B);
+       
         [polygons addObject:polygon];
+
+        startPoint = [self findEar:points :A];            
+        NSLog(@"%d",startPoint);
         
-        startPoint = -1; // TODO: cache values
         
     }
     
