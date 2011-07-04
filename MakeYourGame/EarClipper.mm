@@ -10,18 +10,47 @@
 
 @implementation EarClipper
 
+
+
++ (Boolean) CoLinear:(CGPoint) A:(CGPoint) B:(CGPoint) C{
+    Boolean colinear = true;
+    Boolean entry = false;
+    if(A.x!=B.x && A.x!=C.x){
+        entry = true;
+        float m = (A.y-B.y)/(A.x-B.x);
+        float b = A.y-(A.x*m);
+        
+        colinear = (A.y == m*A.x + b);
+        if(colinear){
+            colinear = (B.y == m*B.x + b);            
+        }
+        
+        if(colinear){
+            colinear = (C.y == m*C.x + b);            
+        }
+    }
+    if(colinear && entry){
+        NSLog(@"Colinear!!!");
+        NSLog(@"a.x=%f a.y=%f",A.x,A.y);
+        NSLog(@"b.x=%f b.y=%f",B.x,B.y);
+        NSLog(@"c.x=%f c.y=%f",C.x,C.y);
+    }
+
+    return colinear;
+}
+
 + (float) CrossArea:(CGPoint) A:(CGPoint) B: (CGPoint) C{
-    //return abs(A.x*B.y+B.x*C.y+C.x*A.y-A.x*C.y-C.x*B.y-B.x*A.y)/2;
-    CGPoint a = A;
+    return abs(A.x*B.y+B.x*C.y+C.x*A.y-A.x*C.y-C.x*B.y-B.x*A.y)/2;
+/*    CGPoint a = A;
     CGPoint b = B;
     CGPoint c = C;
     float ab = sqrt((a.x-b.x)*(a.x-b.x)+(a.y-b.y)*(a.y-b.y));
     float ac = sqrt((a.x-c.x)*(a.x-c.x)+(a.y-c.y)*(a.y-c.y));
-    float bc = sqrt((b.x-c.x)*(b.x-c.x)+(b.y-c.y)*(b.y-c.y));
+    float bc = sqrt((b.x-c.x)*(b.x-c.x)+(b.y-c.y)*(b.y-c.y));*/
 }
 
 - (Boolean) PointInTriangle:(CGPoint) A:(CGPoint) B: (CGPoint) C: (CGPoint) P{
-    float ABC = [EarClipper CrossArea:A :B :C];
+    /*float ABC = [EarClipper CrossArea:A :B :C];
     
     float ABP = [EarClipper CrossArea:A :B :P];
     float ACP = [EarClipper CrossArea:A :C :P];
@@ -32,7 +61,22 @@
     }else{
 //        NSLog(@"-> area ->  %f",ABC);
         return YES;
-    }
+    }*/
+    CGPoint v0 = ccpSub(C, A);
+    CGPoint v1 = ccpSub(B, A);
+    CGPoint v2 = ccpSub(P, A);
+    
+    float dot00 = ccpDot(v0, v0);
+    float dot01 = ccpDot(v0, v1);
+    float dot02 = ccpDot(v0, v2);
+    float dot11 = ccpDot(v1, v1);
+    float dot12 = ccpDot(v1, v2);
+    
+    float invDemon = 1 / (dot00 * dot01 - dot01 * dot01);
+    float u = (dot11 * dot02 - dot01 * dot12) * invDemon;
+    float v = (dot00 * dot12 - dot01 * dot02) * invDemon;
+    
+    return (u > 0) && (v > 0) && (u + v < 1);
 }
 
 - (int) findEar:(NSMutableArray*) points:(int)start{
@@ -62,11 +106,6 @@
             }
             CGPoint P = [(NSValue*)[points objectAtIndex:e] CGPointValue];
             if([self PointInTriangle:A :B :C :P]==YES){
-                NSLog(@"i=%d e=%d",i,e);
-                NSLog(@"a.x=%f a.y=%f",A.x,A.y);
-                NSLog(@"b.x=%f b.y=%f",B.x,B.y);
-                NSLog(@"c.x=%f c.y=%f",C.x,C.y);
-                NSLog(@"p.x=%f p.y=%f",P.x,P.y);
                 passed = NO;
                 break;
             }
@@ -80,38 +119,10 @@
 }
 
 - (NSMutableArray*) RemoveCoLinearPoints:(NSMutableArray*) points{
-    /*CGPoint current_point;
-    CGPoint first_point;
-    float m=0;
-    float errorMargin = 0;
-    Boolean f=false,c=false;*/
+
     int i=0;
     NSMutableArray* pointsToRemove = [[NSMutableArray alloc] init];
-  /*  for(NSValue* point in points){
-        if(!f){
-            f=true;
-            first_point = [point CGPointValue];
-        }else{
-            current_point = [point CGPointValue];
-            if(!c){
-                m = (first_point.y-current_point.y)/(first_point.x-current_point.x);
-                if(m>-100000){
-                    c=true;
-                }
-            }else{
-                float candidate_m = (first_point.y-current_point.y)/(first_point.x-current_point.x);
-                NSLog(@"%f %f",m,candidate_m);
-                if(abs(m-candidate_m)<=errorMargin || candidate_m<-1000000){
-                    [pointsToRemove addObject:point];
-                    i++;
-                }else{
-                    m=candidate_m;
-                    first_point = current_point;
-                    c=false;
-                }
-            }
-        }
-    }*/
+
     for(i=0;i<[points count];i++){
         int j;
         for(j=0;j<5 && i+j<[points count];j++){
@@ -143,8 +154,8 @@
     points = [self RemoveCoLinearPoints:points];
     
     
-    float EPSILON = 1;
-    NSLog(@"%d",[points count]);
+//    float EPSILON = 1;
+    NSLog(@"Transforming total of %d points to poligons",[points count]);
     int A =0;
     int B =0;
     int C =0;
@@ -160,29 +171,21 @@
             A = (startPoint-1>=0 ? startPoint-1 : [points count]-1);
             B = startPoint;
             C = (startPoint+1<[points count] ? startPoint+1 : 0);
-        }else{
-            NSLog(@"aaaaaaaaaa");
         }
-        NSLog(@"A=%d, B=%d, c=%d",A,B,C);
+        
         polygon = [[NSMutableArray alloc] init];
         CGPoint pa = [(NSValue*)[points objectAtIndex:A] CGPointValue];
         CGPoint pb = [(NSValue*)[points objectAtIndex:B] CGPointValue];
         CGPoint pc = [(NSValue*)[points objectAtIndex:C] CGPointValue];
         [polygon addObject:[points objectAtIndex:A]];
         [polygon addObject:[points objectAtIndex:B]];
-        [polygon addObject:[points objectAtIndex:C]];
-        NSLog(@"a.x = %f a.y=%f",pa.x,pa.y);
-        NSLog(@"b.x = %f b.y=%f",pb.x,pb.y);
-        NSLog(@"c.x = %f c.y=%f",pc.x,pc.y);
-        
+        [polygon addObject:[points objectAtIndex:C]];        
         
         [points removeObjectAtIndex:B];
-        NSLog(@"removed %d",B);
        
         [polygons addObject:polygon];
 
-        startPoint = [self findEar:points :A];            
-        NSLog(@"%d",startPoint);
+        startPoint = [self findEar:points :B];            
         
         
     }
