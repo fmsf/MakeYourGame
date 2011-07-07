@@ -18,6 +18,7 @@
         session = [[AVCaptureSession alloc] init];
         //session.sessionPreset = AVCaptureSessionPresetMedium;
         //session.sessionPreset = AVCaptureSessionPreset640x480;
+//        session.sessionPreset = AVCaptureSessionPresetLow;
         session.sessionPreset = AVCaptureSessionPresetLow;
         //session.sessionPreset = AVCaptureSessionPreset1280x720;
         

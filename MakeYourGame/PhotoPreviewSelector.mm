@@ -111,11 +111,6 @@
                 CGPoint A = [((NSValue*)[polygon objectAtIndex:0]) CGPointValue];
                 CGPoint B = [((NSValue*)[polygon objectAtIndex:1]) CGPointValue];
                 CGPoint C = [((NSValue*)[polygon objectAtIndex:2]) CGPointValue];
-/*                NSLog(@"----------");
-                NSLog(@"%f %f",A.x,A.y);
-                NSLog(@"%f %f",B.x,B.y);
-                NSLog(@"%f %f",C.x,C.y);
-                NSLog(@"----------");*/
                 
                 ccDrawLine(A,B);
                 ccDrawLine(A,C);

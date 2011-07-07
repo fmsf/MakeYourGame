@@ -98,6 +98,14 @@
         CGPoint A = [(NSValue*)[points objectAtIndex:v0] CGPointValue];
         CGPoint B = [(NSValue*)[points objectAtIndex:v1] CGPointValue];
         CGPoint C = [(NSValue*)[points objectAtIndex:v2] CGPointValue];
+        
+        CGPoint BA = ccpSub(A, B);
+        CGPoint BC = ccpSub(C, B);
+        float angle = ccpAngle(BC, BA);
+        if(angle>=M_PI){
+            continue;
+        }
+        
         Boolean passed = YES;
         int e;
         for(e=0;e<[points count];e++){
@@ -140,6 +148,54 @@
     return points;
 }
 
+- (NSMutableArray*) ExtractEars:(NSMutableArray*) points{
+    int v0=0, v1=1, v2=2,i=0;
+    NSMutableArray* vertexes = [[NSMutableArray alloc] init];
+    for(i=0;i<[points count];i++){
+        if(i==0){
+            v0=[points count]-1;
+        }else{
+            v0 = i-1;
+        }
+        v1 = i;
+        if(i==[points count]-1){
+            v2=0;
+        }else{
+            v2 = i+1;
+        }
+        
+        
+        CGPoint A = [(NSValue*)[points objectAtIndex:v0] CGPointValue];
+        CGPoint B = [(NSValue*)[points objectAtIndex:v1] CGPointValue];
+        CGPoint C = [(NSValue*)[points objectAtIndex:v2] CGPointValue];
+        
+        CGPoint BA = ccpSub(A, B);
+        CGPoint BC = ccpSub(C, B);
+        float angle = ccpAngle(BC, BA);
+        if(angle>=M_PI){
+            continue;
+        }
+        
+        Boolean passed = YES;
+        int e;
+        for(e=0;e<[points count];e++){
+            if(e==i){
+                continue;
+            }
+            CGPoint P = [(NSValue*)[points objectAtIndex:e] CGPointValue];
+            if([self PointInTriangle:A :B :C :P]==YES){
+                passed = NO;
+                break;
+            }
+        }
+        if(passed){
+            [vertexes addObject:[points objectAtIndex:v1]];
+            i++;
+        }
+    }
+    return vertexes;
+}
+
 - (NSMutableArray*) TransformToPolygons:(NSMutableArray*) points{
     // Only compute polygone if polygon has enought points
     if([points count]<MINIMUM_POINTS_IN_POLYGON){
@@ -160,7 +216,7 @@
     int B =0;
     int C =0;
     while([points count]>3){
-        if(startPoint==-1){
+        if(startPoint==-1 || startPoint>=[points count]){
             startPoint = [self findEar:points:0];
             if(startPoint==-1){
                 break;
@@ -173,10 +229,18 @@
             C = (startPoint+1<[points count] ? startPoint+1 : 0);
         }
         
+
+        
         polygon = [[NSMutableArray alloc] init];
         CGPoint pa = [(NSValue*)[points objectAtIndex:A] CGPointValue];
         CGPoint pb = [(NSValue*)[points objectAtIndex:B] CGPointValue];
         CGPoint pc = [(NSValue*)[points objectAtIndex:C] CGPointValue];
+        
+        CGPoint BA = ccp(pa.x-pb.x,pa.y-pb.y);
+        CGPoint BC = ccp(pc.x-pb.x,pc.y-pb.y);
+        
+
+        
         [polygon addObject:[points objectAtIndex:A]];
         [polygon addObject:[points objectAtIndex:B]];
         [polygon addObject:[points objectAtIndex:C]];        
@@ -185,7 +249,7 @@
        
         [polygons addObject:polygon];
 
-        startPoint = [self findEar:points :B];            
+        startPoint = [self findEar:points :A];            
         
         
     }

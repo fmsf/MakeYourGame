@@ -19,6 +19,7 @@
 + (float) CrossArea:(CGPoint) A:(CGPoint) B: (CGPoint) C;
 - (NSMutableArray*) TransformToPolygons:(NSMutableArray*) points;
 - (int) findEar:(NSMutableArray*) points:(int)start;
+- (NSMutableArray*) ExtractEars:(NSMutableArray*) points;
 - (Boolean) PointInTriangle:(CGPoint) A:(CGPoint) B: (CGPoint) C: (CGPoint) P;
 
 
