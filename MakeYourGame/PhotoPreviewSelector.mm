@@ -83,13 +83,13 @@
         [controller deactivate];
         NSLog(@"Doing trace");
         //[detector doTrace];
-        EarClipper* clipper = [[EarClipper alloc] init];
+        //EarClipper* clipper = [[EarClipper alloc] init];
         if(polygons!=NULL){
             [polygons release];
         }
         polygons = [[NSMutableArray alloc] init];
         for(NSMutableArray* points in [detector getBlobs]){
-            NSMutableArray* candidate = [clipper TransformToPolygons:points];
+            NSMutableArray* candidate = [Triangulate Process:points];//[clipper TransformToPolygons:points];
             if(candidate!=nil){
                 [polygons addObject:candidate];
             }

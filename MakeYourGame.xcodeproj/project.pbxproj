@@ -10,6 +10,7 @@
 		B6279C9E1382931F007D5FA3 /* EarClipper.mm in Sources */ = {isa = PBXBuildFile; fileRef = B6279C9D1382931F007D5FA3 /* EarClipper.mm */; };
 		B6918CE11378266500D18600 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6918CE01378266500D18600 /* CoreMedia.framework */; };
 		B6918CE41378266B00D18600 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6918CE31378266B00D18600 /* CoreVideo.framework */; };
+		B6AD349713CB2A01008A4A62 /* Triangulate.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AD349613CB2A01008A4A62 /* Triangulate.m */; };
 		B6C7F4861373FCDC00E92C82 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6C7F4851373FCDC00E92C82 /* QuartzCore.framework */; };
 		B6C7F4881373FCDC00E92C82 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6C7F4871373FCDC00E92C82 /* OpenGLES.framework */; };
 		B6C7F48A1373FCDC00E92C82 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6C7F4891373FCDC00E92C82 /* OpenAL.framework */; };
@@ -176,6 +177,8 @@
 		B6279C9D1382931F007D5FA3 /* EarClipper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EarClipper.mm; sourceTree = "<group>"; };
 		B6918CE01378266500D18600 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		B6918CE31378266B00D18600 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		B6AD349513CB2A01008A4A62 /* Triangulate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Triangulate.h; sourceTree = "<group>"; };
+		B6AD349613CB2A01008A4A62 /* Triangulate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Triangulate.m; sourceTree = "<group>"; };
 		B6C7F4811373FCDC00E92C82 /* MakeYourGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MakeYourGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6C7F4851373FCDC00E92C82 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		B6C7F4871373FCDC00E92C82 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -536,6 +539,8 @@
 			children = (
 				B6279C9C1382931F007D5FA3 /* EarClipper.h */,
 				B6279C9D1382931F007D5FA3 /* EarClipper.mm */,
+				B6AD349513CB2A01008A4A62 /* Triangulate.h */,
+				B6AD349613CB2A01008A4A62 /* Triangulate.m */,
 			);
 			name = Triangulators;
 			sourceTree = "<group>";
@@ -1199,6 +1204,7 @@
 				B6279C9E1382931F007D5FA3 /* EarClipper.mm in Sources */,
 				B6D383C4138BCE6D00494AFF /* Game.mm in Sources */,
 				B6D383C7138BD68800494AFF /* GamePolygon.m in Sources */,
+				B6AD349713CB2A01008A4A62 /* Triangulate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

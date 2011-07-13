@@ -13,7 +13,7 @@
 #define MINIMUM_POINTS_IN_POLYGON 30
 
 @interface EarClipper : NSObject {
-    
+    NSMutableArray* removedPoints;
 }
 
 + (float) CrossArea:(CGPoint) A:(CGPoint) B: (CGPoint) C;

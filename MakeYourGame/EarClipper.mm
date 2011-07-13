@@ -118,6 +118,13 @@
                 break;
             }
         }
+        for(e=0;e<[removedPoints count] && passed;e++){
+            CGPoint P = [(NSValue*)[removedPoints objectAtIndex:e] CGPointValue];
+            if([self PointInTriangle:A :B :C :P]==YES){
+                passed = NO;
+                break;
+            }
+        }
         if(passed){
             return i;
         }
@@ -188,8 +195,15 @@
                 break;
             }
         }
+        for(e=0;e<[removedPoints count] && passed;e++){
+            CGPoint P = [(NSValue*)[removedPoints objectAtIndex:e] CGPointValue];
+            if([self PointInTriangle:A :B :C :P]==YES){
+                passed = NO;
+                break;
+            }
+        }
         if(passed){
-            [vertexes addObject:[points objectAtIndex:v1]];
+            [vertexes addObject:[NSNumber numberWithInt:i]];
             i++;
         }
     }
@@ -201,6 +215,8 @@
     if([points count]<MINIMUM_POINTS_IN_POLYGON){
         return NULL;
     }
+    
+    removedPoints = [[NSMutableArray alloc]init];
     int startPoint = -1;
 
     NSMutableArray* polygons = [[NSMutableArray alloc] init];
@@ -208,15 +224,45 @@
     NSMutableArray* polygon;
     
     points = [self RemoveCoLinearPoints:points];
+    for(NSValue* p in points){
+        CGPoint c = [p CGPointValue];
+        NSLog(@"(%f,%f)",c.x,c.y);
+    }
     
     
-//    float EPSILON = 1;
     NSLog(@"Transforming total of %d points to poligons",[points count]);
     int A =0;
     int B =0;
     int C =0;
+    int previous = -100;
     while([points count]>3){
-        if(startPoint==-1 || startPoint>=[points count]){
+        
+        NSMutableArray* vertexes = [self ExtractEars:points];
+        NSLog(@"removing %d of %d",[vertexes count], [points count]);
+        if([vertexes count]==0){
+            break;
+        }
+        int offset = 0;
+        for(NSNumber* p in vertexes){
+            polygon = [[NSMutableArray alloc] init];
+            int startPoint = [p intValue]-offset;
+            A = (startPoint-1>=0 ? startPoint-1 : [points count]-1);
+            B = startPoint;
+            C = (startPoint+1<[points count] ? startPoint+1 : 0);
+
+            [polygon addObject:[points objectAtIndex:A]];
+            [polygon addObject:[points objectAtIndex:B]];
+            [polygon addObject:[points objectAtIndex:C]];        
+            
+            [removedPoints addObject:[points objectAtIndex:B]];
+            [points removeObjectAtIndex:B];
+            [polygons addObject:polygon];
+
+            offset++;
+        }
+        
+
+       /* if(startPoint==-1 || startPoint>=[points count]){
             startPoint = [self findEar:points:0];
             if(startPoint==-1){
                 break;
@@ -229,7 +275,7 @@
             C = (startPoint+1<[points count] ? startPoint+1 : 0);
         }
         
-
+        
         
         polygon = [[NSMutableArray alloc] init];
         CGPoint pa = [(NSValue*)[points objectAtIndex:A] CGPointValue];
@@ -239,21 +285,22 @@
         CGPoint BA = ccp(pa.x-pb.x,pa.y-pb.y);
         CGPoint BC = ccp(pc.x-pb.x,pc.y-pb.y);
         
-
+        
         
         [polygon addObject:[points objectAtIndex:A]];
         [polygon addObject:[points objectAtIndex:B]];
         [polygon addObject:[points objectAtIndex:C]];        
         
+        [removedPoints addObject:[points objectAtIndex:B]];
         [points removeObjectAtIndex:B];
-       
-        [polygons addObject:polygon];
-
-        startPoint = [self findEar:points :A];            
         
+        [polygons addObject:polygon];
+        
+        startPoint = -1;//[self findEar:points :C];   */
         
     }
     
+    [removedPoints release];
     return polygons;
 }
 

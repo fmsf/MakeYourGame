@@ -10,7 +10,8 @@
 // Import the interfaces
 #import "HelloWorldLayer.h"
 
-#import "EarClipper.h"
+//#import "EarClipper.h"
+//#import "Triangulate.h"
 
 //Pixel to metres ratio. Box2D uses metres as the unit for measurement.
 //This ratio defines how many pixels correspond to 1 Box2D "metre"
