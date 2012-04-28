@@ -17,7 +17,9 @@
 //This ratio defines how many pixels correspond to 1 Box2D "metre"
 //Box2D is optimized for objects of 1x1 metre therefore it makes sense
 //to define the ratio so that your most common object type is 1x1 metre.
+//#define PTM_RATIO 32
 #define PTM_RATIO 32
+#define POLYGON_SCALE 2
 
 // enums that will be used as tags
 enum {
@@ -173,8 +175,8 @@ enum {
 	
 	//We have a 64x64 sprite sheet with 4 different 32x32 images.  The following code is
 	//just randomly picking one of the images
-	int idx = (CCRANDOM_0_1() > .5 ? 0:1);
-	int idy = (CCRANDOM_0_1() > .5 ? 0:1);
+	//int idx = (CCRANDOM_0_1() > .5 ? 0:1);
+	//int idy = (CCRANDOM_0_1() > .5 ? 0:1);
 	//CCSprite *sprite = [CCSprite spriteWithBatchNode:batch rect:CGRectMake(32 * idx,32 * idy,32,32)];
 	//[batch addChild:sprite];
 	
@@ -275,7 +277,6 @@ enum {
 	[super dealloc];
 }
 
-
 - (void) BuildPolygon:(NSMutableArray*) PolygonList{
     for(NSMutableArray* poly in PolygonList){
         if([poly count]<3){
@@ -283,7 +284,8 @@ enum {
         }
         b2BodyDef polyBodyDef;
         polyBodyDef.type = b2_dynamicBody;        
-        polyBodyDef.position.Set(200/PTM_RATIO, 400/PTM_RATIO);
+        //polyBodyDef.position.Set(200/PTM_RATIO, 400/PTM_RATIO);
+        polyBodyDef.position.Set(20/PTM_RATIO, 40/PTM_RATIO);
         
         b2Body *polyBody = world->CreateBody(&polyBodyDef);
         int p = 0;
@@ -295,9 +297,10 @@ enum {
             
             b2PolygonShape polygonShape;
             b2Vec2 vertices[3];
-            vertices[0].Set(A.x/PTM_RATIO,A.y/PTM_RATIO);
-            vertices[1].Set(B.x/PTM_RATIO,B.y/PTM_RATIO);
-            vertices[2].Set(C.x/PTM_RATIO,C.y/PTM_RATIO);  
+            vertices[0].Set((POLYGON_SCALE*A.x)/PTM_RATIO,(POLYGON_SCALE*A.y)/PTM_RATIO);
+            vertices[1].Set((POLYGON_SCALE*B.x)/PTM_RATIO,(POLYGON_SCALE*B.y)/PTM_RATIO);
+            vertices[2].Set((POLYGON_SCALE*C.x)/PTM_RATIO,(POLYGON_SCALE*C.y)/PTM_RATIO); 
+            NSLog(@"%f %f", A.x, A.y);
             
             Boolean stop = true;
             // Ensure the polygon is convex and the interior

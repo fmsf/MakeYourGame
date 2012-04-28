@@ -16,4 +16,6 @@
     
 }
 
+- (void) SetPolyon:(NSMutableArray*) Polygon;
+
 @end

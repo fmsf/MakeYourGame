@@ -61,7 +61,9 @@
     if(spriteToAdd){
         spriteToAdd = false;
         sprite = [CCSprite spriteWithTexture:[controller getTexture]];
-        sprite.position = ccp(540,460);
+        CGSize size = [[CCDirector sharedDirector] winSize];
+        
+        sprite.position = ccp(size.width /2,size.height/2);
         sprite.scale = 2.0f;
         [self addChild:sprite];
     }else{
@@ -95,6 +97,7 @@
             }
         }
         traced = YES;
+        sprite.opacity = 50;
         
         
     }

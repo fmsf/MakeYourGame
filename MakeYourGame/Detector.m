@@ -84,6 +84,7 @@
 
 - (void) process{
     NSMutableArray* blobs = [[NSMutableArray alloc] init];
+    NSLog(@"%f %f",[imageHandler getImage].size.height, [imageHandler getImage].size.width);
     for(int y=0;y<[imageHandler getImage].size.height;y++){
         for(int x=0;x<[imageHandler getImage].size.width;x++){
             if([imageHandler getRed:x :y]==0){
